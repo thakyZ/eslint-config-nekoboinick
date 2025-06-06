@@ -1,15 +1,18 @@
 {
-  "name": "eslint-nekoboinick-config",
+  "name": "eslint-config-nekoboinick",
   "version": "1.0.0",
   "description": "Neko Boi Nick's personal ESLint config",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "node -e \"import fs from 'fs';if((/\\r\\n/).test(fs.readFileSync('./bin/eslintrc','utf-8'))){throw 'The bin file must not contain any CRLF!';}\"",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thakyz/eslint-nekoboinick-config.git"
+    "url": "git+https://github.com/thakyz/eslint-config-nekoboinick.git"
   },
+  "type": "module",
   "keywords": [
     "eslint",
     "config",
@@ -18,7 +21,29 @@
   "author": "Neko Boi Nick <950594+thakyZ@users.noreply.github.com> (https://github.com/thakyZ)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thakyz/eslint-nekoboinick-config/issues"
+    "url": "https://github.com/thakyz/eslint-config-nekoboinick/issues"
   },
-  "homepage": "https://github.com/thakyz/eslint-nekoboinick-config#readme"
+  "homepage": "https://github.com/thakyz/eslint-config-nekoboinick#readme",
+  "dependencies": {
+    "@eslint/js": "^9.28.0",
+    "@stylistic/eslint-plugin": "^4.4.1",
+    "eslint": "^9.28.0",
+    "eslint-plugin-jest": "^28.13.0",
+    "eslint-plugin-markdown": "^5.1.0",
+    "eslint-plugin-unicorn": "^59.0.1",
+    "typescript-eslint": "^8.33.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "@types/node": "^22.15.30"
+  },
+  "peerDependencies": {
+		"eslint": ">= 9",
+		"@eslint/js": ">= 9",
+		"@stylistic/eslint-plugin": ">= 4",
+		"eslint-plugin-jest": ">= 28",
+		"eslint-plugin-markdown": ">= 5",
+		"eslint-plugin-unicorn": ">= 59",
+		"typescript-eslint": ">= 8"
+	}
 }
