@@ -1,4 +1,4 @@
-declare module "self" {
+declare module "eslint-config-nekoboinick" {
   import type { Linter } from "eslint";
   import type { FlatCompat } from "@eslint/eslintrc";
   type MonkeyCodeNamesTypeDef = "string" | "custom" | "custom_global"
@@ -57,5 +57,5 @@ declare module "self" {
 }
 
 declare namespace self {
-  export * from "self";
+  export * from "eslint-config-nekoboinick";
 }

@@ -23,6 +23,12 @@
   "bugs": {
     "url": "https://github.com/thakyz/eslint-config-nekoboinick/issues"
   },
+  "files": [
+    "index.js",
+    "types/self.d.ts",
+    "types/eslint-plugin-markdown.d.ts",
+    "LICENSE"
+  ],
   "homepage": "https://github.com/thakyz/eslint-config-nekoboinick#readme",
   "dependencies": {
     "@eslint/js": "^9.28.0",

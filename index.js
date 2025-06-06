@@ -1,4 +1,6 @@
 // @ts-check
+/// <reference path="./types/self.d.ts" />
+/// <reference path="./types/eslint-plugin-markdown.d.ts" />
 /// <reference types="node" />
 /// <reference types="eslint" />
 /// <reference lib="es2017" />
@@ -18,13 +20,13 @@ import eslint_jest from "eslint-plugin-jest";
 let globals = _globals
 let js = _js
 
-// @ts-expect-error --- ignore
+// @ts-ignore
 if (Object.hasOwn(_js, 'default')) {
   // @ts-expect-error --- ignore
   eslint = _js.default
 }
 
-// @ts-expect-error --- ignore
+// @ts-ignore
 if (Object.hasOwn(_globals, 'default')) {
   // @ts-expect-error --- ignore
   globals = _globals.default
