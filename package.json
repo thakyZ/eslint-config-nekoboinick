@@ -1,0 +1,24 @@
+{
+  "name": "eslint-nekoboinick-config",
+  "version": "1.0.0",
+  "description": "Neko Boi Nick's personal ESLint config",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thakyz/eslint-nekoboinick-config.git"
+  },
+  "keywords": [
+    "eslint",
+    "config",
+    "personal"
+  ],
+  "author": "Neko Boi Nick <950594+thakyZ@users.noreply.github.com> (https://github.com/thakyZ)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thakyz/eslint-nekoboinick-config/issues"
+  },
+  "homepage": "https://github.com/thakyz/eslint-nekoboinick-config#readme"
+}
