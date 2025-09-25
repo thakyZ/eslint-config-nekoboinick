@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/thakyz/eslint-config-nekoboinick.git"
   },
-  "type": "module",
+  "type": "commonjs",
   "keywords": [
     "eslint",
     "config",
@@ -23,37 +23,34 @@
   "bugs": {
     "url": "https://github.com/thakyz/eslint-config-nekoboinick/issues"
   },
-  "exports": {
-    ".": "./index.js"
-  },
   "files": [
-    "./index.js",
-    "./types/self.d.ts",
-    "./types/eslint-plugin-markdown.d.ts",
+    "index.js",
+    "index.d.ts",
     "LICENSE"
   ],
-  "types": "./types/self.d.ts",
+  "types": "index.d.ts",
   "homepage": "https://github.com/thakyz/eslint-config-nekoboinick#readme",
   "dependencies": {
-    "@eslint/js": "^9.28.0",
-    "@stylistic/eslint-plugin": "^4.4.1",
-    "eslint": "^9.28.0",
-    "eslint-plugin-jest": "^28.13.0",
-    "eslint-plugin-markdown": "^5.1.0",
-    "eslint-plugin-unicorn": "^59.0.1",
-    "typescript-eslint": "^8.33.1"
+    "@eslint/js": ">= 9",
+    "@stylistic/eslint-plugin": ">=5",
+    "eslint": ">=9",
+    "eslint-plugin-jest": ">=29",
+    "eslint-plugin-markdown": ">=5",
+    "eslint-plugin-unicorn": ">=61",
+    "typescript-eslint": ">=8",
+    "typescript": ">=5"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
-    "@types/node": "^22.15.30"
+    "@types/node": "^24.5.2"
   },
   "peerDependencies": {
-		"eslint": ">= 9",
-		"@eslint/js": ">= 9",
-		"@stylistic/eslint-plugin": ">= 4",
-		"eslint-plugin-jest": ">= 28",
-		"eslint-plugin-markdown": ">= 5",
-		"eslint-plugin-unicorn": ">= 59",
-		"typescript-eslint": ">= 8"
-	}
+    "@eslint/js": ">=9",
+    "@stylistic/eslint-plugin": ">=4",
+    "eslint": ">=9",
+    "eslint-plugin-jest": ">=28",
+    "eslint-plugin-markdown": ">=5",
+    "eslint-plugin-unicorn": ">=59",
+    "typescript-eslint": ">=8",
+    "typescript": ">=5"
+  }
 }

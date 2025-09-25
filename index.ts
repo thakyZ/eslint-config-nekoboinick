@@ -1,53 +1,105 @@
-// @ts-check
-/// <reference path="./types/self.d.ts" />
-/// <reference path="./types/eslint-plugin-markdown.d.ts" />
-/// <reference types="node" />
-/// <reference types="eslint" />
-/// <reference lib="es2017" />
-
 import { readdirSync } from "node:fs";
-import { join } from "node:path";
-import { URL, fileURLToPath } from "node:url";
+import path from "node:path";
 import { FlatCompat } from "@eslint/eslintrc";
+import { Linter } from "eslint";
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
-import * as _js from "@eslint/js";
+import js from "@eslint/js";
 import ts from "typescript-eslint";
-import * as _globals from "globals";
+import globals from "globals";
 import stylistic from "@stylistic/eslint-plugin";
 import md from "eslint-plugin-markdown";
-import eslint_jest from "eslint-plugin-jest";
+import jest from "eslint-plugin-jest";
 
-let globals = _globals
-let js = _js
+type MonkeyCodeNamesTypeDef = "string" | "custom" | "custom_global";
 
-// @ts-ignore
-if (Object.hasOwn(_js, 'default')) {
-  // @ts-expect-error --- ignore
-  eslint = _js.default
+/** @type {import('@eslint/eslintrc').FlatCompat} */
+const flatCompat: FlatCompat = new FlatCompat();
+
+/** @type {import('eslint').Linter.Config<import('eslint').Linter.RulesRecord>[]} */
+const greaseMonkey: Linter.Config<Linter.RulesRecord>[] = flatCompat.extends("greasemonkey");
+
+/**
+ * Gets the installed version of a module from the path and name.
+ *
+ * @param {string} name The name of the module to query.
+ * @returns {string | null}
+ */
+function getInstalledVersion(name: string): string | null {
+  /** @type {string[]} */
+  const folders: string[] = readdirSync(path.join(__dirname, "..", "node_modules"));
+
+  for (const item of folders) {
+    if (item.startsWith(`${name}@`)) {
+      return item;
+    }
+  }
+
+  return null;
 }
 
-// @ts-ignore
-if (Object.hasOwn(_globals, 'default')) {
-  // @ts-expect-error --- ignore
-  globals = _globals.default
+type _GetMoneyCodeNamesFuncPlain = (type: MonkeyCodeNamesTypeDef) => Record<string, string> | string[];
+type _GetMoneyCodeNamesFunc = <T extends MonkeyCodeNamesTypeDef>(type: T) => _GetMoneyCodeNamesReturn<T>;
+type _GetMoneyCodeNamesReturn<T extends MonkeyCodeNamesTypeDef> = T extends "string" ? string[] : T extends "custom" ? string[] : Record<string, string>;
+
+/**
+ * Gets a list of monkey code names. And parses them into types.
+ *
+ * @param {Partial<import('eslint').Linter.Config<import('eslint').Linter.RulesRecord>>[]} config
+ * @returns {_GetMoneyCodeNamesFunc}
+ */
+function getMonkeyCodeNames(config: Linter.Config<Linter.RulesRecord>[]): _GetMoneyCodeNamesFunc {
+  /**
+   *
+   * @param {MonkeyCodeNamesTypeDef} type
+   * @returns {Record<string, string> | string[]}
+   */
+  const output: _GetMoneyCodeNamesFuncPlain = (type: MonkeyCodeNamesTypeDef): Record<string, string> | string[] => {
+    /** @type {import("eslint").Linter.Globals | undefined} */
+    const entries: Linter.Globals | undefined = config[0]?.languageOptions?.globals;
+
+    if (!entries) {
+    switch (type) {
+      case "string":
+      case "custom":
+        return [] as string[];
+      default:
+        return {} as Record<string, string>;
+    }
+    }
+
+    /** @type {string[]} */
+    const names: string[] = [
+      ...Object.keys(entries),
+      "GM_configStruct",
+      "GM_configField",
+      "GM_config",
+    ];
+
+    /** @type {string[]} */
+    const customLibraries: string[] = ["GM_config"];
+
+    switch (type) {
+      case "string":
+        return names.concat(customLibraries);
+      case "custom":
+        return customLibraries;
+      case "custom_global":
+        return Object.assign({}, ...customLibraries.map<Record<string, string>>((key: string): Record<string, string> => ({ [key]: "readonly" })));
+      default:
+        return Object.assign({}, ...names.concat(customLibraries).map<Record<string, string>>((key: string): Record<string, string> => ({ [key]: "readonly" })));
+    }
+  };
+
+  return output as _GetMoneyCodeNamesFunc;
 }
 
-/** @type {self.___dirname} */
-// @ts-ignore
-let ___dirname = __dirname;
-if (!___dirname) {
-  // @ts-ignore
-  ___dirname = fileURLToPath(new URL(".", import.meta.url));
-}
-
-/** @type {self.flatCompat} */
-const flatCompat = new FlatCompat();
-
-/** @type {self.greaseMonkey} */
-const greaseMonkey = flatCompat.extends("greasemonkey");
-
-/** @type {self.customRules} */
-function customRules(getMonkeyCodeNames) {
+/**
+ *
+ *
+ * @param {ReturnType<typeof getMonkeyCodeNames>} callback
+ * @returns {import('eslint').Linter.RulesRecord}
+ */
+function customRules(callback: ReturnType<typeof getMonkeyCodeNames>): Linter.RulesRecord {
   return {
     "comma-dangle": "off",
     "for-direction": "error",
@@ -288,8 +340,8 @@ function customRules(getMonkeyCodeNames) {
     "new-cap": ["error", {
       newIsCap: true,
       capIsNew: true,
-      capIsNewExceptions: getMonkeyCodeNames("string"),
-      newIsCapExceptions: getMonkeyCodeNames("string"),
+      capIsNewExceptions: callback("string"),
+      newIsCapExceptions: callback("string"),
     }],
     "new-parens": "error",
     "no-array-constructor": "error",
@@ -421,62 +473,19 @@ function customRules(getMonkeyCodeNames) {
   };
 }
 
-/** @type {self.getInstalledVersion} */
-function getInstalledVersion(name) {
-  if (!___dirname) throw new Error("Type of ___dirname is not defined.");
-  const folders = readdirSync(join(___dirname, "..", "node_modules"));
-  for (const [, item] of Object.entries(folders)) {
-    if (item.startsWith(name + "@")) {
-      return item;
-    }
-  }
+/** @type {string[]} */
+const removableGlobalVars: string[] = ["$"] as const;
 
-  return null;
-}
-
-/** @type {self.getMonkeyCodeNames} */
-function getMonkeyCodeNames(config) {
-  /** @type {self.GetMonkeyCodeNamesFunc} */
-  const output = (type) => {
-    /** @type {import("eslint").Linter.Globals | undefined} */
-    const entries = config[0]?.languageOptions?.globals;
-    if (!entries) {
-      return [];
-    }
-
-    /** @type {Array<string>} */
-    const names = [
-      ...Object.keys(entries),
-      "GM_configStruct",
-      "GM_configField",
-      "GM_config",
-    ];
-
-    /** @type {Array<string>} */
-    const customLibraries = ["GM_config"];
-
-    switch (type) {
-      case "string":
-        return names.concat(customLibraries);
-      case "custom":
-        return customLibraries;
-      case "custom_global":
-        return Object.assign({}, ...customLibraries.map((key) => ({ [key]: "readonly" })));
-      default:
-        return Object.assign({}, ...names.concat(customLibraries).map((key) => ({ [key]: "readonly" })));
-    }
-  };
-
-  return output;
-}
-
-/** @type {self.removableGlobalVars} */
-const removableGlobalVars = ["$"];
-
-/** @type {self.removeGlobalVars} */
-function removeGlobalVars(name, global) {
-  /** @type {self.ObjectOrArrayKvp<string, string | boolean>} */
-  let temp = global;
+/**
+ *
+ *
+ * @param {string} name Name of the global property to remove.
+ * @param {ObjectOrEntryArray<string, string | boolean>} global Object containing the global variables.
+ * @returns {ObjectOrEntryArray<string, string | boolean>}
+ */
+function removeGlobalVars(name: string, global: Linter.Globals): Linter.Globals {
+  /** @type {Linter.Globals} */
+  let temp: Linter.Globals = global;
 
   if (typeof global === "object" && !Array.isArray(global)) {
     for (const removeThis of removableGlobalVars) {
@@ -487,7 +496,7 @@ function removeGlobalVars(name, global) {
              * @param {[string, string | boolean]} param0
              * @returns {[string, boolean | string] | null}
              */
-            ([key, value]) => {
+            ([key, value]: [string, string | boolean]): [string, boolean | string] | null => {
               if (key === removeThis) {
                 if (typeof value === "boolean") {
                   return [key, false];
@@ -501,21 +510,21 @@ function removeGlobalVars(name, global) {
           )
           .filter(
             /**
-             * @param {[string, boolean | string] | null} entry
+             * @param {[string, boolean | string]} entry
              * @returns {boolean}
              */
-            (entry) => entry !== null
+            (entry: [string, boolean | string] | null): boolean => entry !== null
           ),
       );
     }
   } else if (typeof global === "object" && Array.isArray(global)) {
     for (const removeThis of removableGlobalVars) {
-      temp = global.filter(
+      temp = Object.fromEntries(global.filter(
         /**
-         * @param {[string, boolean | string] | string} entry
+         * @param {[string, boolean | string]} entry
          * @returns {boolean}
          */
-        (entry) => {
+        (entry: [string, boolean | string]): boolean => {
           if (typeof entry === "object" && Array.isArray(entry)) {
             return entry[0] !== removeThis;
           }
@@ -526,7 +535,7 @@ function removeGlobalVars(name, global) {
 
           return false;
         },
-      );
+      ));
     }
   } else if (typeof global === "undefined") {
     console.error(new Error(`Argument global of property ${name} is 'undefined'.`));
@@ -541,8 +550,8 @@ function removeGlobalVars(name, global) {
   return temp;
 }
 
-/** @type {import("typescript-eslint").ConfigArray} */
-export default ts.config(
+/** @type {import("eslint").Linter.Config<import("eslint").Linter.RulesRecord>[]} */
+const _default: Linter.Config<Linter.RulesRecord>[] = [
   {
     name: "Ignores",
     ignores: ["node_modules"]
@@ -559,9 +568,9 @@ export default ts.config(
   {
     name: "Jest Configs",
     files: ["test/**"],
-    ...eslint_jest.configs["flat/recommended"],
+    ...jest.configs["flat/recommended"],
     rules: {
-      ...eslint_jest.configs["flat/recommended"].rules,
+      ...jest.configs["flat/recommended"].rules,
     },
   },
   {
@@ -601,7 +610,7 @@ export default ts.config(
       sourceType: "module",
       parserOptions: {
         projectService: true,
-        project: join(___dirname, "tsconfig.json")
+        project: path.join(__dirname, "tsconfig.json")
       },
     },
     linterOptions: {
@@ -646,7 +655,7 @@ export default ts.config(
       sourceType: "module",
       parserOptions: {
         projectService: true,
-        project: join(___dirname, "tsconfig.json"),
+        project: path.join(__dirname, "tsconfig.json"),
       },
     },
     linterOptions: {
@@ -663,4 +672,6 @@ export default ts.config(
       "@typescript-eslint/no-unsafe-member-access": "off",
     },
   },
-);
+];
+
+export default _default;
