@@ -2,41 +2,45 @@
   "name": "eslint-config-nekoboinick",
   "version": "1.0.0",
   "description": "Neko Boi Nick's personal ESLint config",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "node -e \"import fs from 'fs';if((/\\r\\n/).test(fs.readFileSync('./bin/eslintrc','utf-8'))){throw 'The bin file must not contain any CRLF!';}\"",
-    "lint": "eslint"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/thakyz/eslint-config-nekoboinick.git"
-  },
-  "type": "commonjs",
   "keywords": [
     "eslint",
     "config",
     "personal"
   ],
-  "author": "Neko Boi Nick <950594+thakyZ@users.noreply.github.com> (https://github.com/thakyZ)",
+  "author": {
+    "name": "Neko Boi Nick",
+    "url": "https://github.com/thakyZ",
+    "email": "950594+thakyZ@users.noreply.github.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/thakyz/eslint-config-nekoboinick/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thakyz/eslint-config-nekoboinick.git"
+  },
+  "homepage": "https://github.com/thakyz/eslint-config-nekoboinick#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "node -e \"import fs from 'fs';if((/\\r\\n/).test(fs.readFileSync('./bin/eslintrc','utf-8'))){throw 'The bin file must not contain any CRLF!';}\"",
+    "lint": "eslint"
   },
   "files": [
     "index.js",
     "index.d.ts",
     "LICENSE"
   ],
+  "main": "index.js",
+  "type": "commonjs",
   "types": "index.d.ts",
-  "homepage": "https://github.com/thakyz/eslint-config-nekoboinick#readme",
   "dependencies": {
-    "@eslint/js": ">= 9",
+    "@eslint/js": ">=9",
     "@stylistic/eslint-plugin": ">=5",
     "eslint": ">=9",
     "eslint-plugin-jest": ">=29",
     "eslint-plugin-markdown": ">=5",
-    "eslint-plugin-unicorn": ">=61",
+    "eslint-plugin-unicorn": ">=62",
     "typescript-eslint": ">=8",
     "typescript": ">=5"
   },
@@ -49,7 +53,7 @@
     "eslint": ">=9",
     "eslint-plugin-jest": ">=28",
     "eslint-plugin-markdown": ">=5",
-    "eslint-plugin-unicorn": ">=59",
+    "eslint-plugin-unicorn": ">=62",
     "typescript-eslint": ">=8",
     "typescript": ">=5"
   }
