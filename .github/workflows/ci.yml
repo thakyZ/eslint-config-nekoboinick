@@ -2,15 +2,13 @@ name: ci
 
 on:
   push:
-    paths-ignore:
-      - .github
-      - README.md
-      - LICENSE
-      - .gitattributes
-      - .gitignore
+    branches:
+      - main
+    tags:
+      - v*.*.*
   pull_request:
     paths-ignore:
-      - .github
+      - .github/**
       - README.md
       - LICENSE
       - .gitattributes
@@ -35,3 +33,11 @@ jobs:
         run: npm install
       - name: Run CI tests
         run: npm run test:ci
+  release:
+    needs:
+      - ci
+    name: Run Release
+    if: github.event_name == 'push'
+    uses: thakyz/eslint-config-nekoboinick/.github/workflows/release.yml@main
+    with:
+      success: true

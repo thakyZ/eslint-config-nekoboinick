@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-nekoboinick",
+  "name": "@nekogaming/eslint-config-nekoboinick",
   "version": "1.0.0",
   "description": "Neko Boi Nick's personal ESLint config",
   "keywords": [
