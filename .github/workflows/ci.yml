@@ -28,7 +28,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os:
+          - ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -36,7 +37,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: true
-          node-version-file: .node-version
+          node-version-file: .nvmrc
       - name: Install dependencies
         run: npm install
       - name: Run CI tests
