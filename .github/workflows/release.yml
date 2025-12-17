@@ -1,0 +1,40 @@
+name: release
+on:
+  workflow_run:
+    workflows:
+      - ci # Name of the source workflow
+    types:
+      - completed
+
+permissions:
+  contents: read # for checkout
+
+jobs:
+  test:
+    name: Release through Node.JS
+    runs-on: ubuntu-latest
+    env:
+      HAS_SECRETS: ${{ secrets.NPM_TOKEN != '' }}
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+    steps:
+      - name: Cancel Release
+        if: env.HAS_SECRETS == 'false'
+        run: echo 'Canceled Releae'; exit 1
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Node.JS
+        uses: actions/setup-node@v6
+        with:
+          cache: true
+          node-version-file: "${{ github.workspace }}/.node-version"
+      - name: Install dependencies
+        run: npm install
+      - name: Semantic Release from NPM
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run semantic-release

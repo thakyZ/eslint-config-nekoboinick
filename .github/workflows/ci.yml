@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*.*.*
+  pull_request:
+
+jobs:
+  test:
+    name: Test with Node.JS
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: true
+          node-version-file: "${{ github.workspace }}/.node-version"
+      - name: Install dependencies
+        run: npm install
+      - name: Run CI tests
+        run: npm run test:ci

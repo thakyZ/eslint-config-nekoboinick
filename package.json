@@ -3,58 +3,111 @@
   "version": "1.0.0",
   "description": "Neko Boi Nick's personal ESLint config",
   "keywords": [
+    "personal",
     "eslint",
-    "config",
-    "personal"
+    "eslint-config",
+    "eslint-plugin",
+    "react",
+    "react-dom",
+    "typescript",
+    "markdown",
+    "unicorn",
+    "typescript-eslint",
+    "typescript-eslint-parser",
+    "eslint stylistic"
   ],
   "author": {
     "name": "Neko Boi Nick",
     "url": "https://github.com/thakyZ",
     "email": "950594+thakyZ@users.noreply.github.com"
   },
+  "contributors": [
+    {
+      "name": "Neko Boi Nick",
+      "url": "https://github.com/thakyZ",
+      "email": "950594+thakyZ@users.noreply.github.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/thakyz/eslint-config-nekoboinick/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/thakyz/eslint-config-nekoboinick.git"
+    "url": "https://github.com/thakyz/eslint-config-nekoboinick"
   },
   "homepage": "https://github.com/thakyz/eslint-config-nekoboinick#readme",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "node -e \"import fs from 'fs';if((/\\r\\n/).test(fs.readFileSync('./bin/eslintrc','utf-8'))){throw 'The bin file must not contain any CRLF!';}\"",
-    "lint": "eslint"
+    "build": "npx esmc --no-cjs && npx @eslint/config-inspector build",
+    "lint": "eslint --report-unused-disable-directives --config ./src/index.ts --cache ./*.ts",
+    "lint:fix": "npm run lint --fix",
+    "precommit:lint": "eslint-find-rules --unused",
+    "precommit:eol": "node -e \"import fs from 'fs';if((/\\r\\n/).test(fs.readFileSync('./bin/eslintrc','utf-8'))){throw 'The bin file must not contain any CRLF!';}\"",
+    "precommit": "npm run precommit:eol && npm run precommit:lint",
+    "prepublishOnly": "npm run build",
+    "semantic-release": "semantic-release",
+    "test:ci": "npm run build && npm run lint"
   },
   "files": [
-    "index.js",
-    "index.d.ts",
+    "dist",
+    "logo.png",
+    "src",
     "LICENSE"
   ],
-  "main": "index.js",
-  "type": "commonjs",
-  "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": "^22.14.0 || >= 24.10.0"
+  },
+  "type": "module",
   "dependencies": {
-    "@eslint/js": ">=9",
+    "@eslint-community/eslint-plugin-eslint-comments": ">=4",
+    "@eslint-react/eslint-plugin": ">=2",
     "@stylistic/eslint-plugin": ">=5",
-    "eslint": ">=9",
-    "eslint-plugin-jest": ">=29",
-    "eslint-plugin-markdown": ">=5",
-    "eslint-plugin-unicorn": ">=62",
-    "typescript-eslint": ">=8",
-    "typescript": ">=5"
-  },
-  "devDependencies": {
-    "@types/node": "^24.5.2"
-  },
-  "peerDependencies": {
+    "@next/eslint-plugin-next": ">=16",
+    "@typescript-eslint/parser": ">=8",
+    "eslint-plugin-import-x": ">=4",
+    "eslint-plugin-n": ">=17",
     "@eslint/js": ">=9",
-    "@stylistic/eslint-plugin": ">=4",
-    "eslint": ">=9",
+    "globals": ">=16",
+    "eslint-config-flat-gitignore": ">=2",
+    "eslint-flat-config-utils": ">=2",
     "eslint-plugin-jest": ">=28",
     "eslint-plugin-markdown": ">=5",
+    "eslint-plugin-promise": ">=7",
+    "eslint-plugin-react": ">=5",
+    "eslint-plugin-react-hooks": ">=7",
+    "eslint-plugin-react-refresh": ">=0",
+    "eslint-plugin-unused-imports": ">=4",
     "eslint-plugin-unicorn": ">=62",
-    "typescript-eslint": ">=8",
-    "typescript": ">=5"
+    "eslint-config-greasemonkey": ">=0",
+    "typescript-eslint": ">=8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "eslint": ">=9",
+    "jiti": ">=2",
+    "typescript": ">=5",
+    "semantic-release": ">=21"
+  },
+  "peerDependencies": {
+    "@stylistic/eslint-plugin": ">=4",
+    "eslint": ">=7",
+    "eslint-plugin-jest": ">=28",
+    "eslint-plugin-markdown": ">=5",
+    "eslint-plugin-jsx-a11y": ">=6",
+    "eslint-plugin-react": ">=7",
+    "eslint-plugin-react-hooks": ">=5",
+    "eslint-plugin-unicorn": ">=62"
   }
 }
