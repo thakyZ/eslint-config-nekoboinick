@@ -13,8 +13,6 @@ jobs:
   ci:
     name: Run CI
     uses: thakyz/eslint-config-nekoboinick/.github/workflows/ci.yml@main
-    with:
-      success: true
   release:
     needs:
       - ci
