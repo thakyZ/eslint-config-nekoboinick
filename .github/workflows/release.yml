@@ -34,8 +34,8 @@ jobs:
       - name: Setup Node.JS
         uses: actions/setup-node@v6
         with:
-          cache: true
-          node-version-file: .node-version
+          cache: 'npm'
+          node-version-file: .nvmrc
       - name: Install dependencies
         run: npm install
       - name: Semantic Release from NPM
