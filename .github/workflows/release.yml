@@ -16,16 +16,17 @@ jobs:
   ci:
     name: Run CI
     uses: thakyz/eslint-config-nekoboinick/.github/workflows/ci.yml@main
-    if: github.env.HAS_SECRETS == 'true'
   release:
     needs:
       - ci
     name: Release through Node.JS
     runs-on: ubuntu-latest
-    if: github.env.HAS_SECRETS == 'true'
     permissions:
       contents: write
     steps:
+      - name: Cancel Workflow
+        if: env.HAS_SECRETS == 'false'
+        run: echo 'Canceled Workflow'; exit 1
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Node.JS
