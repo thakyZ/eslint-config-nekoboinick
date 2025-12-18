@@ -39,7 +39,7 @@
   "homepage": "https://github.com/thakyz/eslint-config-nekoboinick#readme",
   "scripts": {
     "build": "npx esmc --no-cjs && npx @eslint/config-inspector build",
-    "lint": "eslint --report-unused-disable-directives --config ./src/index.ts --cache ./*.ts",
+    "lint": "eslint --report-unused-disable-directives --cache",
     "lint:fix": "npm run lint --fix",
     "precommit:lint": "eslint-find-rules --unused",
     "precommit:eol": "node -e \"import fs from 'fs';if((/\\r\\n/).test(fs.readFileSync('./bin/eslintrc','utf-8'))){throw 'The bin file must not contain any CRLF!';}\"",

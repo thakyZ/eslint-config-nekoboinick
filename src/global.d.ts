@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export {};
 
 import { Entries, Entry, ValueOf } from "type-fest";
@@ -165,7 +166,7 @@ declare global {
      * @param {T} items Additional arrays and/or items to add to the end of the array.
      * @returns {TOut[]}
      */
-    concat<TOut>(...items: (T | ConcatArray<T>)[]): T[];
+    concat<TOut>(...items: (T | ConcatArray<T>)[]): TOut[];
     /**
      * Calls a defined callback function on each element of an array, and returns an array that contains the results.
      * @template U
@@ -174,5 +175,5 @@ declare global {
      * @returns {U[]}
      */
     map<U>(callbackfn: (value: T, index: number, array: T[]) => unknown, thisArg?: any): U[];
-}
+  }
 }

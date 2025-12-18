@@ -1,14 +1,15 @@
 import type { Linter } from "eslint";
-import { Entries, Entry, ValueOf } from "type-fest";
-import type { getMonkeyCodeNames } from "./greasemonkey.js";
+// import { Entry, Entries } from "type-fest";
+import type { GetMoneyCodeNamesFunc } from "./greasemonkey.js";
 
 /**
  *
  *
- * @param {ReturnType<typeof getMonkeyCodeNames>} callback
+ * @param {GetMoneyCodeNamesFunc} callback
  * @returns {import('eslint').Linter.RulesRecord}
  */
-export default function customRules(callback: ReturnType<typeof getMonkeyCodeNames>): Linter.RulesRecord {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function customRules(callback: GetMoneyCodeNamesFunc): Linter.RulesRecord {
   return {
     "comma-dangle": "off",
     "for-direction": "error",
@@ -35,7 +36,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "no-extra-parens": ["error", "all", {
       conditionalAssign: false,
       nestedBinaryExpressions: false,
-      ignoreJSX: "multi-line"
+      ignoreJSX: "multi-line",
     }],
     "no-extra-semi": "error",
     "no-func-assign": "error",
@@ -74,13 +75,13 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
       allowImplicit: true,
     }],
     "block-scoped-var": "error",
-    complexity: "warn",
-    curly: "error",
+    "complexity": "warn",
+    "curly": "error",
     "default-case": "error",
     "default-case-last": "error",
     "dot-notation": "error",
     "dot-location": ["error", "property"],
-    eqeqeq: "error",
+    "eqeqeq": "error",
     "grouped-accessor-pairs": ["error", "getBeforeSet"],
     "guard-for-in": "error",
     "no-alert": "error",
@@ -149,7 +150,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "prefer-regex-literals": ["error", {
       disallowRedundantWrapping: true,
     }],
-    radix: "error",
+    "radix": "error",
 
     // Disabled for now as it causes too much churn
     // TODO: Enable it in the future when I have time to deal with
@@ -160,7 +161,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "wrap-iife": ["error", "inside", {
       functionPrototypeMethods: true,
     }],
-    yoda: "error",
+    "yoda": "error",
     "no-delete-var": "error",
     "no-label-var": "error",
     "no-restricted-globals": ["error", "event"],
@@ -179,8 +180,8 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     }],
     "no-buffer-constructor": "error",
     "no-restricted-imports": ["error",
-      "domain",   "freelist", "smalloc",
-      "punycode", "sys",     "querystring",
+      "domain", "freelist", "smalloc",
+      "punycode", "sys", "querystring",
       "colors",
     ],
     "array-bracket-newline": ["error", "consistent"],
@@ -189,13 +190,13 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "brace-style": ["error", "1tbs", {
       allowSingleLine: false,
     }],
-    camelcase: ["error", {
+    "camelcase": ["error", {
       properties: "never",
       ignoreDestructuring: true,
       ignoreGlobals: true,
       allow: [
         /\b\w+GM_\w+\b/.source,
-      ]
+      ],
     }],
     "capitalized-comments": ["error", "always", {
       // You can also ignore this rule by wrapping the first word in quotes.
@@ -219,7 +220,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     }],
     "func-names": ["error", "never"],
     "function-call-argument-newline": ["error", "consistent"],
-    indent: ["error", 2, {
+    "indent": ["error", 2, {
       SwitchCase: 1,
     }],
     "jsx-quotes": ["error", "prefer-double"],
@@ -243,14 +244,16 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "max-depth": "warn",
     "max-nested-callbacks": ["warn", 4],
     "max-params": ["warn", {
-        max: 4,
+      max: 4,
     }],
     "max-statements-per-line": "off",
     "new-cap": ["error", {
       newIsCap: true,
       capIsNew: true,
-      capIsNewExceptions: callback("array"),
-      newIsCapExceptions: callback("array"),
+      capIsNewExceptionPattern: "^GM_[a-zA-Z]+\\b",
+      newIsCapExceptionPattern: "^GM_[a-zA-Z]+\\b",
+      // capIsNewExceptions: callback("array"),
+      // newIsCapExceptions: callback("array"),
     }],
     "new-parens": "error",
     "no-array-constructor": "error",
@@ -287,13 +290,13 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "prefer-exponentiation-operator": "error",
     "prefer-object-spread": "error",
     "quote-props": ["error", "as-needed"],
-    quotes: ["error", "double"],
+    "quotes": ["error", "double"],
     "semi-spacing": ["error", {
       before: false,
       after: true,
     }],
     "semi-style": ["error", "last"],
-    semi: ["error", "always"],
+    "semi": ["error", "always"],
     "space-before-blocks": ["error", "always"],
     "space-before-function-paren": ["error", {
       anonymous: "always",
@@ -312,7 +315,8 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
         exceptions: ["-", "+", "*"],
         markers: ["!", "*"],
         balanced: true,
-      }},
+      },
+    },
     ],
     "switch-colon-spacing": ["error", {
       after: true,
@@ -382,82 +386,85 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
   };
 }
 
-/** @type {string[]} */
-const removableGlobalVars: string[] = ["$"] as const;
+// /** @type {string[]} */
+// const removableGlobalVars: string[] = ["$"] as const;
 
-/**
- *
- *
- * @param {keyof import("eslint").Linter.Globals} name Name of the global property to remove.
- * @param {import("eslint").Linter.Globals} global Object containing the global variables.
- * @returns {import("eslint").Linter.Globals}
- */
-function removeGlobalVars(name: keyof Linter.Globals, global: Linter.Globals): Linter.Globals {
-  /** @type {Linter.Globals} */
-  let temp: Linter.Globals = global;
+// /**
+//  *
+//  *
+//  * @param {keyof import("eslint").Linter.Globals} name Name of the global property to remove.
+//  * @param {import("eslint").Linter.Globals} global Object containing the global variables.
+//  * @returns {import("eslint").Linter.Globals}
+//  */
+// function removeGlobalVars(name: keyof Linter.Globals, global: Linter.Globals): Linter.Globals {
+//   /** @type {Linter.Globals} */
+//   let temp: Linter.Globals = global;
 
-  if (typeof global === "object" && !Array.isArray(global)) {
-    for (const removeThis of removableGlobalVars) {
-      temp = Object.assign<Linter.Globals, Linter.Globals>(
-        {},
-        Object.fromEntries<Linter.Globals>(
-          Object.entries<Linter.Globals>(temp)
-            .map<Entry<Linter.Globals>>(
-              /**
-               * @param {import("type-fest").Entry<Linter.Globals>} param0
-               * @returns {import("type-fest").Entry<Linter.Globals> | null}
-               */
-              ([key, value]: Entry<Linter.Globals>): Entry<Linter.Globals> | null => {
-                if (key === removeThis) {
-                  if (typeof value === "boolean") {
-                    return [key, false];
-                  }
+//   if (typeof global === "object" && !Array.isArray(global)) {
+//     for (const removeThis of removableGlobalVars) {
+//       temp = Object.assign<Linter.Globals, Linter.Globals>(
+//         {},
+//         Object.fromEntries<Linter.Globals>(
+//           Object.entries<Linter.Globals>(temp)
+//             .map<Entry<Linter.Globals>>(
+//               /**
+//                * @param {import("type-fest").Entry<Linter.Globals>} param0
+//                * @returns {import("type-fest").Entry<Linter.Globals> | null}
+//                */
+//               ([key, value]: Entry<Linter.Globals>): Entry<Linter.Globals> | null => {
+//                 if (key === removeThis) {
+//                   if (typeof value === "boolean") {
+//                     return [key, false];
+//                   }
 
-                  return null;
-                }
+//                   return null;
+//                 }
 
-                return [key, value];
-              },
-            )
-            .filter(
-              /**
-               * @param {import("type-fest").Entry<Linter.Globals>} entry
-               * @returns {boolean}
-               */
-              (entry: Entry<Linter.Globals> | null): boolean => entry !== null
-            ),
-        )
-      );
-    }
-  } else if (typeof global === "object" && Array.isArray(global)) {
-    for (const removeThis of removableGlobalVars) {
-      temp = Object.fromEntries<Linter.Globals>(global.filter(
-        /**
-         * @param {import("type-fest").Entry<Linter.Globals>} entry
-         * @returns {boolean}
-         */
-        (entry: Entry<Linter.Globals>): boolean => {
-          if (typeof entry === "object" && Array.isArray(entry)) {
-            return entry[0] !== removeThis;
-          }
+//                 return [key, value];
+//               },
+//             )
+//             .filter(
+//               /**
+//                * @param {import("type-fest").Entry<Linter.Globals>} entry
+//                * @returns {boolean}
+//                */
+//               (entry: Entry<Linter.Globals> | null): boolean => entry !== null,
+//             ),
+//         ),
+//       );
+//     }
+//   }
+//   else if (typeof global === "object" && Array.isArray(global)) {
+//     for (const removeThis of removableGlobalVars) {
+//       temp = Object.fromEntries<Linter.Globals>((global as Entries<Linter.Globals>).filter(
+//         /**
+//          * @param {import("type-fest").Entry<Linter.Globals>} entry
+//          * @returns {boolean}
+//          */
+//         (entry: Entry<Linter.Globals>): boolean => {
+//           if (typeof entry === "object" && Array.isArray(entry)) {
+//             return entry[0] !== removeThis;
+//           }
 
-          if (typeof entry === "string") {
-            return entry !== removeThis;
-          }
+//           if (typeof entry === "string") {
+//             return entry !== removeThis;
+//           }
 
-          return false;
-        },
-      ));
-    }
-  } else if (global === undefined) {
-    console.error(new Error(`Argument global of property ${name} is 'undefined'.`));
+//           return false;
+//         },
+//       ));
+//     }
+//   }
+//   else if (global === undefined) {
+//     console.error(new Error(`Argument global of property ${name} is 'undefined'.`));
 
-    return global;
-  } else {
-    console.warn(`Argument global of property ${name} is not a type of 'object' or 'array' but is instead a '${typeof global}'.`);
+//     return global;
+//   }
+//   else {
+//     console.warn(`Argument global of property ${name} is not a type of 'object' or 'array' but is instead a '${typeof global}'.`);
 
-    return global;
-  }
+//     return global;
+//   }
 
-  return temp;
-}
+//   return temp;
+// }

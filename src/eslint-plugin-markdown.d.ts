@@ -1,11 +1,13 @@
 declare module "eslint-plugin-markdown" {
-  interface MarkdownPlugin {
+  import { Linter } from "eslint";
+
+  interface MarkdownPlugin extends Linter.Config {
     configs: {
-      recommended: Partial<import("eslint").Linter.Config>[];
-    }
+      recommended: Linter.Config[];
+    };
   }
 
-  const markdownPlugin: MarkdownPlugin
+  const markdownPlugin: MarkdownPlugin;
 
-  export = markdownPlugin
+  export = markdownPlugin;
 }
