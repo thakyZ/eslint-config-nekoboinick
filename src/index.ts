@@ -249,6 +249,10 @@ interface IConfigInitalizationOptions {
   stylistic_customize: (customize: typeof stylisticPlugin.configs.customize) => Linter.Config;
 }
 
+const keysToRemoveIfExists: Record<keyof Linter.RulesRecord, keyof Linter.RulesRecord> = {
+  "key-spacing": "@stylistic/key-spacing",
+}
+
 export default function init(options?: ConfigInitalizationOptions): Linter.Config[] {
   const output: Linter.Config[] = [];
   const plugins: Plugins | undefined = typeof options === "function" || options?.override
@@ -474,6 +478,58 @@ export default function init(options?: ConfigInitalizationOptions): Linter.Confi
           index++;
         }
       }
+    }
+
+    let index: number = 0;
+
+    for (const entry of output) {
+      for (const key of Object.keys(keysToRemoveIfExists)) {
+        const value: keyof Linter.RulesRecord = keysToRemoveIfExists[key];
+
+        if (entry.rules && value in entry.rules && key in entry.rules) {
+          const value: Linter.RuleEntry<unknown[]> | undefined = entry.rules[key];
+
+          switch (typeof value) {
+            case "string":
+              if (value !== "off") {
+                entry.rules[key] = "off";
+              }
+              break;
+            case "number":
+              if (value !== 0) {
+                entry.rules[key] = 0;
+              }
+              break;
+            case "object":
+              if (Array.isArray(value) && value.length >= 1) {
+                switch (typeof value[0]) {
+                  case "string":
+                    if (value[0] !== "off") {
+                      entry.rules[key] = "off";
+                    }
+                    break;
+                  case "number":
+                    if (value[0] !== 0) {
+                      entry.rules[key] = 0;
+                    }
+                    break;
+                  default:
+                    console.warn(`Expected rule severity for rule '${key}' in entry ${entry.name ? `named '${entry.name}'` : `at index ${index}`} to be a String or Number but got a ${typeof value[0]} instead.`);
+                    break;
+                }
+              }
+              else {
+                console.warn(`Expected rule severity for rule '${key}' in entry ${entry.name ? `named '${entry.name}'` : `at index ${index}`} to be an Array but got an Object instead.`);
+              }
+              break;
+            default:
+              console.warn(`Expected rule severity for rule '${key}' in entry ${entry.name ? `named '${entry.name}'` : `at index ${index}`} to be a String, Number, or Array but got a ${typeof value} instead.`);
+              break;
+          }
+        }
+      }
+
+      index++;
     }
 
     if (options?.override) {
