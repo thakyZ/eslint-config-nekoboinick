@@ -251,7 +251,7 @@ interface IConfigInitalizationOptions {
 
 const keysToRemoveIfExists: Record<keyof Linter.RulesRecord, keyof Linter.RulesRecord> = {
   "key-spacing": "@stylistic/key-spacing",
-}
+};
 
 export default function init(options?: ConfigInitalizationOptions): Linter.Config[] {
   const output: Linter.Config[] = [];

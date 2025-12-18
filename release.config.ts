@@ -38,36 +38,36 @@ export default {
       },
     }],
     // "@semantic-release/npm",
-    // ["@semantic-release/git", {
-    //   assets:  ["dist/**/*.{js,css}", "docs", "package.json"],
-    //   message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}", // eslint-disable-line no-template-curly-in-string
-    // }],
-    // ["@semantic-release/github", {
-    //   assets: [
-    //     {
-    //       path:  "dist/asset.min.css",
-    //       label: "CSS distribution",
-    //     },
-    //     {
-    //       path:  "dist/asset.min.js",
-    //       label: "JS distribution",
-    //     },
-    //   ],
-    //   // Defaults:
-    //   // successComment: ":tada: This issue has been resolved in version ${nextRelease.version} :tada:\n" // eslint-disable-line no-template-curly-in-string
-    //   //   + "\n"
-    //   //   + "The release is available on [GitHub release](<github_release_url>)",
-    //   // successCommentCondition: null,
-    //   // failComment:             null,
-    //   // failTitle:               "The automated release is failing 🚨",
-    //   // failCommentCondition:    null,
-    //   // labels:                  ["semantic-release"],
-    //   // releasedLabels:          "['released<%= nextRelease.channel ? \\ on @${nextRelease.channel}` : \"\" %>']-", // eslint-disable-line no-template-curly-in-string
-    //   // releaseNameTemplate:     "<%= nextverison.name %>",
-    //   // releaseBodyTemplate:     "<%= nextverison.notes %>",
-    //   // discussionCategoryName:  false,
-    //   assignees:    /*      */ ["thakyz"],
-    //   draftRelease: /*      */ true,
-    // }],
+    ["@semantic-release/git", {
+      assets:  ["dist/**/*.{js,css}", "docs", "package.json"],
+      message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}", // eslint-disable-line no-template-curly-in-string
+    }],
+    ["@semantic-release/github", {
+      assets: [
+        {
+          path:  "dist/asset.min.css",
+          label: "CSS distribution",
+        },
+        {
+          path:  "dist/asset.min.js",
+          label: "JS distribution",
+        },
+      ],
+      // Defaults:
+      // successComment: ":tada: This issue has been resolved in version ${nextRelease.version} :tada:\n" // eslint-disable-line no-template-curly-in-string
+      //   + "\n"
+      //   + "The release is available on [GitHub release](<github_release_url>)",
+      // successCommentCondition: null,
+      // failComment:             null,
+      // failTitle:               "The automated release is failing 🚨",
+      // failCommentCondition:    null,
+      // labels:                  ["semantic-release"],
+      // releasedLabels:          "['released<%= nextRelease.channel ? \\ on @${nextRelease.channel}` : \"\" %>']-", // eslint-disable-line no-template-curly-in-string
+      // releaseNameTemplate:     "<%= nextverison.name %>",
+      // releaseBodyTemplate:     "<%= nextverison.notes %>",
+      // discussionCategoryName:  false,
+      assignees:    ["thakyz"],
+      draftRelease: true,
+    }],
   ],
 };
