@@ -9,8 +9,8 @@ on:
 permissions:
   contents: read
 
-env:
-  HAS_SECRETS: ${{ secrets.NPM_TOKEN != '' }}
+#env:
+#  HAS_SECRETS: ${{ secrets.NPM_TOKEN != '' }}
 
 jobs:
   ci:
@@ -24,9 +24,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Cancel Workflow
-        if: env.HAS_SECRETS == 'false'
-        run: echo 'Canceled Workflow'; exit 1
+      #- name: Cancel Workflow
+      #  if: env.HAS_SECRETS == 'false'
+      #  run: echo 'Canceled Workflow'; exit 1
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Node.JS
@@ -39,5 +39,5 @@ jobs:
       - name: Semantic Release from NPM
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm run semantic-release
+          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release --ci
