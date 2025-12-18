@@ -82,6 +82,7 @@
     "@semantic-release/release-notes-generator": "^14.1.0",
     "@stylistic/eslint-plugin": ">=4",
     "@typescript-eslint/parser": ">=8",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "eslint-config-flat-gitignore": ">=2",
     "eslint-config-greasemonkey": ">=0",
     "eslint-flat-config-utils": ">=2",
