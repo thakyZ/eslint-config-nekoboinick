@@ -39,13 +39,10 @@ export default {
         commitsSort: ["subject", "scope"],
       },
     }],
-    // "@semantic-release/npm",
-    ["@semantic-release/git", {
-      assets: [
-        "dist",
-      ],
-      message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}", // eslint-disable-line no-template-curly-in-string
+    ["@semantic-release/changelog", {
+      changelogFile: "CHANGELOG.md",
     }],
+    // "@semantic-release/npm",
     ["@semantic-release/github", {
       assets: [
       ],
@@ -64,6 +61,12 @@ export default {
       // discussionCategoryName:  false,
       assignees:    ["thakyz"],
       draftRelease: true,
+    }],
+    ["@semantic-release/git", {
+      assets: [
+        "dist", "CHANGELOG.md", "package.json", "package-lock.json", "npm-shrinkwrap.json",
+      ],
+      message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}", // eslint-disable-line no-template-curly-in-string
     }],
   ],
 };
