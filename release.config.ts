@@ -1,4 +1,3 @@
-/* eslint-disable key-spacing */
 /**
  * @type {import("semantic-release").GlobalConfig}
  */
@@ -7,22 +6,22 @@ export default {
     "main",
   ],
   repositoryUrl: "https://github.com/thakyz/eslint-config-nekoboinick",
-  tagFormat:     "v${version}", // eslint-disable-line no-template-curly-in-string
-  plugins:       [
+  tagFormat: "v${version}", // eslint-disable-line no-template-curly-in-string
+  plugins: [
     ["@semantic-release/commit-analyzer", {
-      preset:       "conventionalcommits",
+      preset: "conventionalcommits",
       releaseRules: [
         {
-          type:    "docs",
-          scope:   "README",
+          type: "docs",
+          scope: "README",
           release: "patch",
         },
         {
-          type:    "refactor",
+          type: "refactor",
           release: "patch",
         },
         {
-          type:    "style",
+          type: "style",
           release: "patch",
         },
       ],
@@ -31,7 +30,7 @@ export default {
       },
     }],
     ["@semantic-release/release-notes-generator", {
-      preset:     "conventionalcommits",
+      preset: "conventionalcommits",
       parserOpts: {
         noteKeywords: ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"],
       },
@@ -59,12 +58,16 @@ export default {
       // releaseNameTemplate:     "<%= nextverison.name %>",
       // releaseBodyTemplate:     "<%= nextverison.notes %>",
       // discussionCategoryName:  false,
-      assignees:    ["thakyz"],
+      assignees: ["thakyz"],
       draftRelease: true,
     }],
     ["@semantic-release/git", {
       assets: [
-        "dist", "CHANGELOG.md", "package.json", "package-lock.json", "npm-shrinkwrap.json",
+        "dist",
+        "CHANGELOG.md",
+        "package.json",
+        "package-lock.json",
+        "npm-shrinkwrap.json",
       ],
       message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}", // eslint-disable-line no-template-curly-in-string
     }],

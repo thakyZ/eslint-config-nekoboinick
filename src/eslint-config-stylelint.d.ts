@@ -1,5 +1,5 @@
 declare module "eslint-config-stylelint" {
-  import { Linter } from "eslint";
+  import type { Linter } from "eslint";
 
   declare const stylelintConfig: Linter.Config;
 
@@ -7,7 +7,7 @@ declare module "eslint-config-stylelint" {
 }
 
 declare module "eslint-config-stylelint/jest" {
-  import { Linter } from "eslint";
+  import type { Linter } from "eslint";
 
   const stylelintJestConfig: Linter.Config;
 

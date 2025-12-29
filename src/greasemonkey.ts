@@ -1,5 +1,5 @@
 import type { Linter } from "eslint";
-import { Entry } from "type-fest";
+import type { Entry } from "type-fest";
 
 type MonkeyCodeNamesTypeDef = "array" | "record";
 
@@ -22,15 +22,17 @@ type MonkeyCodeNamesTypeDef = "array" | "record";
 //   return null;
 // }
 
+// eslint-disable-next-line jsdoc/require-returns-check,jsdoc/lines-before-block
 /**
+ * Gets the GreaseMonkey globals in the given type format.
  *
  * @template {MonkeyCodeNamesTypeDef} T
- * @param {T} type ---
- * @returns {(T extends "array" ? (keyof import('eslint').Linter.Globals)[] : T extends "record" ? import('eslint').Linter.Globals : never)[]}
+ * @param {T} type
+ * @returns {(T extends "array" ? (keyof import('eslint').Linter.Globals)[] : T extends "record" ? import('eslint').Linter.Globals : never)[]} Returns the GreaseMonkey globals in the given format.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 function GetMonkeyCodeNames<T extends MonkeyCodeNamesTypeDef>(type: T): (T extends "array" ? (keyof Linter.Globals)[] : T extends "record" ? Linter.Globals : never)[] {
-  throw new Error("This is a dumby method.");
+  throw new Error("This is a dummy method.");
 }
 
 /**
@@ -41,8 +43,8 @@ function GetMonkeyCodeNames<T extends MonkeyCodeNamesTypeDef>(type: T): (T exten
  */
 export function getMonkeyCodeNames<A extends Linter.Globals = Linter.Globals>(...config: Partial<A>[]): typeof GetMonkeyCodeNames {
   /** @type {typeof GetMonkeyCodeNames} */
-  return <T extends MonkeyCodeNamesTypeDef>(type: T): ReturnType<typeof GetMonkeyCodeNames<T>> => {
-    return config.map<ReturnType<typeof GetMonkeyCodeNames<T>>[number]>(
+  return <T extends MonkeyCodeNamesTypeDef>(type: T): ReturnType<typeof GetMonkeyCodeNames<T>> =>
+    config.map<ReturnType<typeof GetMonkeyCodeNames<T>>[number]>(
       /**
        * @param {import('eslint').Linter.Config} item
        * @returns {ReturnType<typeof GetMonkeyCodeNames<T>>[number]}
@@ -54,6 +56,8 @@ export function getMonkeyCodeNames<A extends Linter.Globals = Linter.Globals>(..
               return [] as (keyof Linter.Globals)[] as ReturnType<typeof GetMonkeyCodeNames<T>>[number];
             case "record":
               return {} as ReturnType<typeof GetMonkeyCodeNames<T>>[number];
+            default:
+              throw new Error(`Got unexpected type ${type}, expected either "array" or "record".`);
           }
         }
 
@@ -77,11 +81,16 @@ export function getMonkeyCodeNames<A extends Linter.Globals = Linter.Globals>(..
                    * @param {keyof import('eslint').Linter.Globals} key
                    * @returns {import("type-fest").Entry<import("eslint").Linter.Globals>}
                    */
-                  (key: keyof Linter.Globals): Entry<Linter.Globals> => [key, "readonly"]),
+                  (key: keyof Linter.Globals): Entry<Linter.Globals> => [
+                    key,
+                    "readonly",
+                  ],
+                ),
               ),
             ) as Linter.Globals as ReturnType<typeof GetMonkeyCodeNames<T>>[number];
+          default:
+            throw new Error(`Got unexpected type ${type}, expected either "array" or "record".`);
         }
       },
     );
-  };
 }

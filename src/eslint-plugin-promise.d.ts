@@ -1,11 +1,11 @@
 declare module "eslint-plugin-promise" {
-  import { ReadonlyDeep } from "type-fest";
-  import { Linter } from "eslint";
-  import { RulesMeta } from "@eslint/core";
+  import type { ReadonlyDeep } from "type-fest";
+  import type { Linter } from "eslint";
+  import type { RulesMeta } from "@eslint/core";
 
   const promisePlugin: {
     configs: {
-      readonly "recommended": Linter.Config;
+      readonly recommended: Linter.Config;
       readonly "flat/recommended": Linter.Config;
     };
     rules: {

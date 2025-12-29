@@ -1,6 +1,6 @@
 declare module "eslint-plugin-jsx-a11y" {
-  import { Linter } from "eslint";
-  import { RulesMeta } from "@eslint/core";
+  import type { Linter } from "eslint";
+  import type { RulesMeta } from "@eslint/core";
 
   declare const jsxA11yPlugin: {
     readonly configs: {
@@ -32,7 +32,7 @@ declare module "eslint-plugin-jsx-a11y" {
       readonly "interactive-supports-focus": RulesMeta;
       readonly "label-has-associated-control": RulesMeta;
       readonly "label-has-for": RulesMeta;
-      readonly "lang": RulesMeta;
+      readonly lang: RulesMeta;
       readonly "media-has-caption": RulesMeta;
       readonly "mouse-events-have-key-events": RulesMeta;
       readonly "no-access-key": RulesMeta;
@@ -49,7 +49,7 @@ declare module "eslint-plugin-jsx-a11y" {
       readonly "prefer-tag-over-role": RulesMeta;
       readonly "role-has-required-aria-props": RulesMeta;
       readonly "role-supports-aria-props": RulesMeta;
-      readonly "scope": RulesMeta;
+      readonly scope: RulesMeta;
       readonly "tabindex-no-positive": RulesMeta;
     };
     readonly meta: {

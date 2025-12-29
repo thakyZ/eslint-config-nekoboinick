@@ -1,19 +1,49 @@
-import type { LanguageOptions, RuleVisitor } from "@eslint/core";
-import type { Linter } from "eslint";
-import type {
-  Data, Literal, Parent, Blockquote, Break, Code, Definition, Emphasis, Heading, Html, Image,
-  ImageReference, InlineCode, Link, LinkReference, List, ListItem, Paragraph, Root, Strong, Text,
-  ThematicBreak, Delete, FootnoteDefinition, FootnoteReference, Table, TableCell, TableRow, Yaml,
-} from "mdast";
 import type { MarkdownLanguage, MarkdownRuleDefinition } from "@eslint/markdown";
 
+/* eslint "jsdoc/tag-lines":["error","any",{startLines:0}] */
+
 declare module "@eslint/markdown" {
+  import type { LanguageOptions, RuleVisitor } from "@eslint/core";
+  import type { Linter } from "eslint";
+  import type {
+    Data,
+    Literal,
+    Parent,
+    Blockquote,
+    Break,
+    Code,
+    Definition,
+    Emphasis,
+    Heading,
+    Html,
+    Image,
+    ImageReference,
+    InlineCode,
+    Link,
+    LinkReference,
+    List,
+    ListItem,
+    Paragraph,
+    Root,
+    Strong,
+    Text,
+    ThematicBreak,
+    Delete,
+    FootnoteDefinition,
+    FootnoteReference,
+    Table,
+    TableCell,
+    TableRow,
+    Yaml,
+  } from "mdast";
+
   /**
    * Extracts lintable code blocks from Markdown text.
    * @param {string} sourceText The text of the file.
    * @param {string} filename The filename of the file.
-   * @returns {Array<{ filename: string, text: string }>} Source code blocks to lint.
+   * @returns {Array<{filename:string;text:string}>} Source code blocks to lint.
    */
+  // eslint-disable-next-line no-unused-vars
   function preprocess(sourceText: string, filename: string): Array<{
     filename: string;
     text: string;
@@ -21,11 +51,12 @@ declare module "@eslint/markdown" {
 
   /**
    * Transforms generated messages for output.
-   * @param {Array<Linter.LintMessage[]>} messages An array containing one array of messages
-   *     for each code block returned from `preprocess`.
+   * @param {Array<import('eslint').Linter.LintMessage[]>} messages An array containing one array of messages
+   * for each code block returned from `preprocess`.
    * @param {string} filename The filename of the file
-   * @returns {Linter.LintMessage[]} A flattened array of messages with mapped locations.
+   * @returns {import('eslint').Linter.LintMessage[]} A flattened array of messages with mapped locations.
    */
+  // eslint-disable-next-line no-unused-vars
   function postprocess(messages: Array<Linter.LintMessage[]>, filename: string): Linter.LintMessage[];
 
   /** Adds matching `:exit` selectors for all properties of a `RuleVisitor`. */
@@ -42,44 +73,51 @@ declare module "@eslint/markdown" {
     comments: string[];
     rangeMap: RangeMap[];
   }
+
   /**
    * Markdown TOML.
    */
   export interface Toml extends Literal {
   /**
-       * Node type of mdast TOML.
-       */
+   * Node type of mdast TOML.
+   */
     type: "toml";
+
     /**
-       * Data associated with the mdast TOML.
-       */
+     * Data associated with the mdast TOML.
+     */
     data?: TomlData | undefined;
   }
+
   /**
    * Info associated with mdast TOML nodes by the ecosystem.
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface TomlData extends Data {
   }
+
   /**
    * Markdown JSON.
    */
   export interface Json extends Literal {
-  /**
-       * Node type of mdast JSON.
-       */
-    type: "json";
     /**
-       * Data associated with the mdast JSON.
-       */
+     * Node type of mdast JSON.
+     */
+    type: "json";
+
+    /**
+     * Data associated with the mdast JSON.
+     */
     data?: JsonData | undefined;
   }
+
   /**
    * Info associated with mdast JSON nodes by the ecosystem.
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface JsonData extends Data {
   }
+
   /**
    * Language options provided for Markdown files.
    */
@@ -90,9 +128,10 @@ declare module "@eslint/markdown" {
     frontmatter?: false | "yaml" | "toml" | "json";
   }
   export interface MarkdownRuleVisitor extends RuleVisitor, WithExit<{
+    // eslint-disable-next-line no-unused-vars
     root?(node: Root): void;
   } & {
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents,no-unused-vars
     [NodeType in Blockquote | Break | Code | Definition | Emphasis | Heading | Html | Image | ImageReference | InlineCode | Link | LinkReference | List | ListItem | Paragraph | Strong | Text | ThematicBreak | Delete | FootnoteDefinition | FootnoteReference | Table | TableCell | TableRow | Yaml | Toml | Json as NodeType["type"]]?: (node: NodeType, parent?: Parent) => void;
   }> {
   }
@@ -253,7 +292,7 @@ declare module "@eslint/markdown" {
           readonly processor?: undefined;
         })[];
       };
-      readonly "recommended": {
+      readonly recommended: {
         readonly name: string;
         readonly files: string[];
         readonly language: string;
@@ -279,7 +318,7 @@ declare module "@eslint/markdown" {
           readonly "markdown/table-column-count": "error";
         };
       }[];
-      readonly "processor": Linter.Config[];
+      readonly processor: Linter.Config[];
     };
   };
 }

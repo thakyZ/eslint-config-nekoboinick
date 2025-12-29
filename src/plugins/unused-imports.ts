@@ -5,21 +5,20 @@ import type { ImportModuleSafe } from "../types.ts";
 type ModuleType = typeof import("eslint-plugin-unused-imports");
 
 /**
- * Exports the `eslint-plugin-unused-imports` plguin.
+ * Exports the `eslint-plugin-unused-imports` plugin.
  *
  * @returns {Promise<ImportModuleSafe<ModuleType>>}
  */
 export default async function (): Promise<ImportModuleSafe<ModuleType>> {
   try {
-    const module = (await import("eslint-plugin-unused-imports"));
+    const module = await import("eslint-plugin-unused-imports");
 
     if ("default" in module) {
       return module.default;
     }
 
     return module;
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     console.error(serialize(ensureError(error)));
     return {} as ImportModuleSafe<ModuleType>;
   }

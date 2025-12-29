@@ -1,7 +1,7 @@
 declare module "@eslint-community/eslint-plugin-eslint-comments" {
-  import { Linter } from "eslint";
-  import { RulesMeta } from "@eslint/core";
-  import { ReadonlyDeep } from "type-fest";
+  import type { Linter } from "eslint";
+  import type { RulesMeta } from "@eslint/core";
+  import type { ReadonlyDeep } from "type-fest";
 
   const eslintCommentsPlugin: {
     readonly configs: {
@@ -19,6 +19,7 @@ declare module "@eslint-community/eslint-plugin-eslint-comments" {
       readonly "require-description": ReadonlyDeep<RulesMeta<"missingDescription">>;
     };
     readonly utils: {
+      // eslint-disable-next-line no-unused-vars
       readonly patch: (ruleId?: keyof Linter.RulesRecord = "@eslint-community/eslint-comments/no-unused-disable") => void;
     };
   };

@@ -11,15 +11,14 @@ type ModuleType = typeof import("@eslint/markdown");
  */
 export default async function (): Promise<ImportModuleSafe<ModuleType>> {
   try {
-    const module = (await import("@eslint/markdown"));
+    const module = await import("@eslint/markdown");
 
     if ("default" in module) {
       return module.default;
     }
 
     return module;
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     console.error(serialize(ensureError(error)));
     return {} as ImportModuleSafe<ModuleType>;
   }

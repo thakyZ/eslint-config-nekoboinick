@@ -11,15 +11,14 @@ type ModuleType = typeof import("typescript-eslint");
  */
 export default async function (): Promise<ImportModuleSafe<ModuleType>> {
   try {
-    const module = (await import("typescript-eslint"));
+    const module = await import("typescript-eslint");
 
     if ("default" in module) {
       return module.default as ImportModuleSafe<ModuleType>;
     }
 
     return module;
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     console.error(serialize(ensureError(error)));
     return {} as ImportModuleSafe<ModuleType>;
   }

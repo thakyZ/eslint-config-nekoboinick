@@ -2,16 +2,16 @@ import { serialize } from "error-serializer";
 import ensureError from "ensure-error";
 import type { ImportModuleSafe } from "../types.ts";
 
-type ModuleType = typeof import("eslint-plugin-unicorn");
+type ModuleType = typeof import("eslint-plugin-jsonc");
 
 /**
- * Exports the `eslint-plugin-unicorn` config.
+ * Exports the `eslint-plugin-jsonc` config.
  *
  * @returns {Promise<ImportModuleSafe<ModuleType>>}
  */
 export default async function (): Promise<ImportModuleSafe<ModuleType>> {
   try {
-    const module = await import("eslint-plugin-unicorn");
+    const module = await import("eslint-plugin-jsonc");
 
     if ("default" in module) {
       return module.default;

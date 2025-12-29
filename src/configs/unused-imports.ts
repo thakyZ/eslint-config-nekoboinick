@@ -11,15 +11,14 @@ type ModuleType = typeof import("eslint-plugin-unused-imports");
  */
 export default async function (): Promise<ImportModuleSafe<ModuleType>> {
   try {
-    const module = (await import("eslint-plugin-unused-imports"));
+    const module = await import("eslint-plugin-unused-imports");
 
     if ("default" in module) {
       return module.default;
     }
 
     return module;
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     console.error(serialize(ensureError(error)));
     return {};
   }

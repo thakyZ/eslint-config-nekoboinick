@@ -11,7 +11,7 @@ type ModuleType = typeof import("@next/eslint-plugin-next");
  */
 export default async function (): Promise<ImportModuleSafe<ModuleType>> {
   try {
-    const module = (await import("@next/eslint-plugin-next"));
+    const module = await import("@next/eslint-plugin-next");
 
     if ("default" in module) {
       // @ts-expect-error --- Unknown as to why the `meta` property is expected/missing.
@@ -19,8 +19,7 @@ export default async function (): Promise<ImportModuleSafe<ModuleType>> {
     }
 
     return module;
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     console.error(serialize(ensureError(error)));
     return {} as ImportModuleSafe<ModuleType>;
   }

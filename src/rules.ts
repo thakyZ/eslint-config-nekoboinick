@@ -1,17 +1,15 @@
 import type { Linter } from "eslint";
-// import { Entry, Entries } from "type-fest";
-import type { getMonkeyCodeNames } from "./greasemonkey.js";
+import type { getMonkeyCodeNames } from "./greasemonkey.ts";
 
 /**
+ * Gets the custom rules for this config.
  *
- *
- * @param {GetMoneyCodeNamesFunc} callback
+ * @param {ReturnType<typeof import('./greasemonkey.ts').getMoneyCodeNames>} callback
  * @returns {import('eslint').Linter.RulesRecord}
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function customRules(callback: ReturnType<typeof getMonkeyCodeNames>): Linter.RulesRecord {
   return {
-    "comma-dangle": "off",
+    "@stylistic/comma-dangle": ["error", "always-multiline"],
     "for-direction": "error",
     "getter-return": "error",
     "no-async-promise-executor": "error",
@@ -33,12 +31,12 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "no-ex-assign": "error",
     "no-extra-boolean-cast": "error",
     // Disabled because of https://github.com/eslint/eslint/issues/6028
-    "no-extra-parens": ["error", "all", {
+    "@stylistic/no-extra-parens": ["error", "all", {
       conditionalAssign: false,
       nestedBinaryExpressions: false,
       ignoreJSX: "multi-line",
     }],
-    "no-extra-semi": "error",
+    "@stylistic/no-extra-semi": "error",
     "no-func-assign": "error",
     "no-import-assign": "error",
     "no-inner-declarations": "error",
@@ -75,13 +73,13 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
       allowImplicit: true,
     }],
     "block-scoped-var": "error",
-    "complexity": "warn",
-    "curly": "error",
+    complexity: "warn",
+    curly: "error",
     "default-case": "error",
     "default-case-last": "error",
     "dot-notation": "error",
-    "dot-location": ["error", "property"],
-    "eqeqeq": "error",
+    "@stylistic/dot-location": ["error", "property"],
+    eqeqeq: "error",
     "grouped-accessor-pairs": ["error", "getBeforeSet"],
     "guard-for-in": "error",
     "no-alert": "error",
@@ -100,7 +98,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "no-extra-bind": "error",
     "no-extra-label": "error",
     "no-fallthrough": "error",
-    "no-floating-decimal": "error",
+    "@stylistic/no-floating-decimal": "error",
     "no-global-assign": "error",
     "no-implicit-coercion": "error",
     "no-implicit-globals": "error",
@@ -108,7 +106,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "no-iterator": "error",
     "no-labels": "error",
     "no-lone-blocks": "error",
-    "no-multi-spaces": "error",
+    "@stylistic/no-multi-spaces": "error",
     "no-multi-str": "error",
     "no-new-func": "error",
     "no-new-wrappers": "error",
@@ -119,7 +117,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "no-proto": "error",
     "no-redeclare": "off",
     "no-return-assign": ["error", "always"],
-    "no-return-await": "error",
+    // "no-return-await": "error",
     "no-script-url": "error",
     "no-self-assign": ["error", {
       props: true,
@@ -150,7 +148,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "prefer-regex-literals": ["error", {
       disallowRedundantWrapping: true,
     }],
-    "radix": "error",
+    radix: "error",
 
     // Disabled for now as it causes too much churn
     // TODO: Enable it in the future when I have time to deal with
@@ -158,10 +156,10 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     // Still doesn't have a fixer as of ESLint 7.24.0.
     "require-unicode-regexp": "error",
 
-    "wrap-iife": ["error", "inside", {
+    "@stylistic/wrap-iife": ["error", "inside", {
       functionPrototypeMethods: true,
     }],
-    "yoda": "error",
+    yoda: "error",
     "no-delete-var": "error",
     "no-label-var": "error",
     "no-restricted-globals": ["error", "event"],
@@ -174,63 +172,59 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
       vars: "all",
       args: "after-used",
       ignoreRestSiblings: true,
-      argsIgnorePattern: /^_/.source,
+      argsIgnorePattern: /^_/u.source,
       caughtErrors: "all",
-      caughtErrorsIgnorePattern: /^_$/.source,
+      caughtErrorsIgnorePattern: /^_$/u.source,
     }],
-    "no-buffer-constructor": "error",
-    "no-restricted-imports": ["error",
-      "domain", "freelist", "smalloc",
-      "punycode", "sys", "querystring",
-      "colors",
-    ],
-    "array-bracket-newline": ["error", "consistent"],
-    "array-bracket-spacing": ["error", "never"],
-    "array-element-newline": ["error", "consistent"],
-    "brace-style": ["error", "1tbs", {
-      allowSingleLine: false,
+    "n/no-deprecated-api": "error",
+    "no-restricted-imports": ["error", "domain", "freelist", "smalloc", "punycode", "sys", "querystring", "colors"],
+    "@stylistic/array-bracket-newline": ["error", "consistent"],
+    "@stylistic/array-bracket-spacing": ["error", "never"],
+    "@stylistic/array-element-newline": ["error", "consistent"],
+    "@stylistic/brace-style": ["error", "1tbs", {
+      allowSingleLine: true,
     }],
-    "camelcase": ["error", {
+    camelcase: ["error", {
       properties: "never",
       ignoreDestructuring: true,
       ignoreGlobals: true,
       allow: [
-        /\b\w+GM_\w+\b/.source,
+        /\b\w+GM_\w+\b/u.source,
       ],
     }],
     "capitalized-comments": ["error", "always", {
       // You can also ignore this rule by wrapping the first word in quotes.
       // c8 => https://github.com/bcoe/c8
-      ignorePattern: /pragma|ignore|prettier-ignore|webpack\w+:|c8|type-coverage:|cSpell:/.source,
+      ignorePattern: /pragma|ignore|prettier-ignore|webpack\w+:|c8|type-coverage:|cSpell:/u.source,
       ignoreInlineComments: true,
       ignoreConsecutiveComments: true,
     }],
-    "comma-spacing": ["error", {
+    "@stylistic/comma-spacing": ["error", {
       before: false,
       after: true,
     }],
-    "comma-style": ["error", "last"],
-    "computed-property-spacing": ["error", "never", {
+    "@stylistic/comma-style": ["error", "last"],
+    "@stylistic/computed-property-spacing": ["error", "never", {
       enforceForClassMembers: true,
     }],
-    "eol-last": "error",
-    "func-call-spacing": ["error", "never"],
+    "@stylistic/eol-last": "error",
+    "@stylistic/function-call-spacing": ["error", "never"],
     "func-name-matching": ["error", {
       considerPropertyDescriptor: true,
     }],
     "func-names": ["error", "never"],
-    "function-call-argument-newline": ["error", "consistent"],
-    "indent": ["error", 2, {
+    "@stylistic/function-call-argument-newline": ["error", "consistent"],
+    "@stylistic/indent": ["error", 2, {
       SwitchCase: 1,
     }],
-    "jsx-quotes": ["error", "prefer-double"],
-    "key-spacing": ["error", {
+    "@stylistic/jsx-quotes": ["error", "prefer-double"],
+    "@stylistic/key-spacing": ["error", {
       beforeColon: false,
       afterColon: true,
     }],
-    "keyword-spacing": "error",
-    "linebreak-style": ["off", "unix"],
-    "lines-between-class-members": ["error", "always", {
+    "@stylistic/keyword-spacing": "error",
+    "@stylistic/linebreak-style": ["off", "unix"],
+    "@stylistic/lines-between-class-members": ["error", "always", {
       // Workaround to allow class fields to not have lines between them.
       // TODO: Get ESLint to add an option to ignore class fields.
       exceptAfterSingleLine: true,
@@ -246,67 +240,67 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "max-params": ["warn", {
       max: 4,
     }],
-    "max-statements-per-line": "off",
+    "@stylistic/max-statements-per-line": "off",
     "new-cap": ["error", {
       newIsCap: true,
       capIsNew: true,
       capIsNewExceptionPattern: "^GM_[a-zA-Z]+\\b",
       newIsCapExceptionPattern: "^GM_[a-zA-Z]+\\b",
-      // capIsNewExceptions: callback("array"),
-      // newIsCapExceptions: callback("array"),
+      capIsNewExceptions: callback("array").flatMap((x) => x),
+      newIsCapExceptions: callback("array").flatMap((x) => x),
     }],
-    "new-parens": "error",
+    "@stylistic/new-parens": "error",
     "no-array-constructor": "error",
     "no-bitwise": "error",
     "no-lonely-if": "error",
-    "no-mixed-operators": "error",
-    "no-mixed-spaces-and-tabs": "error",
+    "@stylistic/no-mixed-operators": "error",
+    "@stylistic/no-mixed-spaces-and-tabs": "error",
     "no-multi-assign": "off",
-    "no-multiple-empty-lines": ["error", {
+    "@stylistic/no-multiple-empty-lines": ["error", {
       max: 1,
     }],
     "no-negated-condition": "error",
-    "no-new-object": "error",
-    "no-whitespace-before-property": "error",
-    "no-trailing-spaces": "error",
+    "no-object-constructor": "error",
+    "@stylistic/no-whitespace-before-property": "error",
+    "@stylistic/no-trailing-spaces": "error",
     "no-unneeded-ternary": "error",
-    "object-curly-spacing": ["error", "always"],
+    "@stylistic/object-curly-spacing": ["error", "always"],
 
     // Disabled because of https://github.com/xojs/eslint-config-xo/issues/27
-    "object-property-newline": "error",
+    "@stylistic/object-property-newline": "error",
 
     "one-var": ["error", "never"],
-    "one-var-declaration-per-line": "error",
+    "@stylistic/one-var-declaration-per-line": "error",
     "operator-assignment": ["error", "always"],
-    "operator-linebreak": ["error", "before"],
-    "padded-blocks": ["error", "never", {
+    "@stylistic/operator-linebreak": ["error", "before"],
+    "@stylistic/padded-blocks": ["error", "never", {
       allowSingleLineBlocks: false,
     }],
-    "padding-line-between-statements": ["error", {
+    "@stylistic/padding-line-between-statements": ["error", {
       blankLine: "always",
       prev: "multiline-block-like",
       next: "*",
     }],
     "prefer-exponentiation-operator": "error",
     "prefer-object-spread": "error",
-    "quote-props": ["error", "as-needed"],
-    "quotes": ["error", "double"],
-    "semi-spacing": ["error", {
+    "@stylistic/quote-props": ["error", "as-needed"],
+    "@stylistic/quotes": ["error", "double"],
+    "@stylistic/semi-spacing": ["error", {
       before: false,
       after: true,
     }],
-    "semi-style": ["error", "last"],
-    "semi": ["error", "always"],
-    "space-before-blocks": ["error", "always"],
-    "space-before-function-paren": ["error", {
+    "@stylistic/semi-style": ["error", "last"],
+    "@stylistic/semi": ["error", "always"],
+    "@stylistic/space-before-blocks": ["error", "always"],
+    "@stylistic/space-before-function-paren": ["error", {
       anonymous: "always",
       named: "never",
       asyncArrow: "always",
     }],
-    "space-in-parens": ["error", "never"],
-    "space-infix-ops": "error",
-    "space-unary-ops": "error",
-    "spaced-comment": ["error", "always", {
+    "@stylistic/space-in-parens": ["error", "never"],
+    "@stylistic/space-infix-ops": "error",
+    "@stylistic/space-unary-ops": "error",
+    "@stylistic/spaced-comment": ["error", "always", {
       line: {
         exceptions: ["-", "+", "*"],
         markers: ["!", "/", "=>", "#region", "#endregion", "@ts-check"],
@@ -316,22 +310,21 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
         markers: ["!", "*"],
         balanced: true,
       },
-    },
-    ],
-    "switch-colon-spacing": ["error", {
+    }],
+    "@stylistic/switch-colon-spacing": ["error", {
       after: true,
       before: false,
     }],
-    "template-tag-spacing": ["error", "never"],
+    "@stylistic/template-tag-spacing": ["error", "never"],
     "unicode-bom": ["error", "never"],
     "arrow-body-style": "error",
-    "arrow-parens": ["error", "always"],
-    "arrow-spacing": ["error", {
+    "@stylistic/arrow-parens": ["error", "always"],
+    "@stylistic/arrow-spacing": ["error", {
       before: true,
       after: true,
     }],
     "constructor-super": "error",
-    "generator-star-spacing": ["error", "both"],
+    "@stylistic/generator-star-spacing": ["error", "both"],
     "no-class-assign": "error",
     "no-const-assign": "error",
     "no-constant-binary-expression": "error",
@@ -369,8 +362,7 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
         // `let foo; ({foo} = object);`
         object: false,
       },
-    },
-    {
+    }, {
       enforceForRenamedProperties: false,
     }],
     "prefer-numeric-literals": "error",
@@ -378,11 +370,30 @@ export default function customRules(callback: ReturnType<typeof getMonkeyCodeNam
     "prefer-rest-params": "error",
     "prefer-spread": "error",
     "require-yield": "error",
-    "rest-spread-spacing": ["error", "never"],
+    "@stylistic/rest-spread-spacing": ["error", "never"],
     "symbol-description": "error",
-    "template-curly-spacing": "error",
-    "yield-star-spacing": ["error", "both"],
+    "@stylistic/template-curly-spacing": "error",
+    "@stylistic/yield-star-spacing": ["error", "both"],
     "vue/array-element-newline": "off",
+    "jsdoc/no-types": "off",
+    "jsdoc/tag-lines": ["error", "any", {
+      startLines: 1,
+    }],
+    "n/no-unpublished-import": ["error", {
+      ignoreTypeImport: true,
+      allowModules: [
+        "eslint",
+      ],
+    }],
+    "n/no-extraneous-import": ["error", {
+      allowModules: [
+        "@eslint/core",
+        "@eslint/eslintrc",
+      ],
+    }],
+    "n/no-missing-import": ["error", {
+      ignoreTypeImport: true,
+    }],
   };
 }
 
