@@ -1,5 +1,3 @@
-// import * as path from "node:path";
-// import { readdirSync } from "node:fs";
 import type { Linter } from "eslint";
 import { Entry } from "type-fest";
 
@@ -24,36 +22,38 @@ type MonkeyCodeNamesTypeDef = "array" | "record";
 //   return null;
 // }
 
-type _GetMoneyCodeNamesFuncReturn<T> = T extends "array" ? (keyof Linter.Globals)[] : T extends "record" ? Linter.Globals : never;
-type _GetMoneyCodeNamesFuncReturnArray<T> = _GetMoneyCodeNamesFuncReturn<T>[];
-export interface GetMoneyCodeNamesFunc {
-  <T extends MonkeyCodeNamesTypeDef>(type: T): _GetMoneyCodeNamesFuncReturnArray<T>;
+/**
+ *
+ * @template {MonkeyCodeNamesTypeDef} T
+ * @param {T} type ---
+ * @returns {(T extends "array" ? (keyof import('eslint').Linter.Globals)[] : T extends "record" ? import('eslint').Linter.Globals : never)[]}
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function GetMonkeyCodeNames<T extends MonkeyCodeNamesTypeDef>(type: T): (T extends "array" ? (keyof Linter.Globals)[] : T extends "record" ? Linter.Globals : never)[] {
+  throw new Error("This is a dumby method.");
 }
 
 /**
  * Gets a list of monkey code names. And parses them into types.
  *
- * @param {Partial<import('eslint').Linter.Config<import('eslint').Linter.RulesRecord>>[]} config
- * @returns {GetMoneyCodeNamesFunc}
+ * @param {Partial<import("eslint").Linter.Globals>[]} config
+ * @returns {typeof GetMonkeyCodeNames}
  */
-export function getMonkeyCodeNames<T extends Linter.Config<Linter.RulesRecord> = Linter.Config<Linter.RulesRecord>>(...config: Partial<T>[]): GetMoneyCodeNamesFunc {
-  /** @type {GetMoneyCodeNamesFunc} */
-  return <T extends MonkeyCodeNamesTypeDef>(type: T): _GetMoneyCodeNamesFuncReturnArray<T> => {
-    return config.map<_GetMoneyCodeNamesFuncReturn<T>>(
+export function getMonkeyCodeNames<A extends Linter.Globals = Linter.Globals>(...config: Partial<A>[]): typeof GetMonkeyCodeNames {
+  /** @type {typeof GetMonkeyCodeNames} */
+  return <T extends MonkeyCodeNamesTypeDef>(type: T): ReturnType<typeof GetMonkeyCodeNames<T>> => {
+    return config.map<ReturnType<typeof GetMonkeyCodeNames<T>>[number]>(
       /**
-       * @param {import('eslint').Linter.Config<import('eslint').Linter.RulesRecord>} item
-       * @returns {_GetMoneyCodeNamesFuncReturn<T>}
+       * @param {import('eslint').Linter.Config} item
+       * @returns {ReturnType<typeof GetMonkeyCodeNames<T>>[number]}
        */
-      (item: Linter.Config<Linter.RulesRecord>): _GetMoneyCodeNamesFuncReturn<T> => {
-        /** @type {import("eslint").Linter.Globals | undefined} */
-        const entries: Linter.Globals | undefined = item.languageOptions?.globals as Linter.Globals;
-
-        if (!entries) {
+      (item: Partial<A>): ReturnType<typeof GetMonkeyCodeNames<T>>[number] => {
+        if (!item) {
           switch (type) {
             case "array":
-              return [] as (keyof Linter.Globals)[] as _GetMoneyCodeNamesFuncReturn<T>;
+              return [] as (keyof Linter.Globals)[] as ReturnType<typeof GetMonkeyCodeNames<T>>[number];
             case "record":
-              return {} as Linter.Globals as _GetMoneyCodeNamesFuncReturn<T>;
+              return {} as ReturnType<typeof GetMonkeyCodeNames<T>>[number];
           }
         }
 
@@ -67,19 +67,19 @@ export function getMonkeyCodeNames<T extends Linter.Config<Linter.RulesRecord> =
 
         switch (type) {
           case "array":
-            return Object.keys<Linter.Globals>(entries).concat<keyof Linter.Globals>(customLibraries) as _GetMoneyCodeNamesFuncReturn<T>;
+            return Object.keys<Partial<A>>(item).concat<keyof Linter.Globals>(customLibraries) as ReturnType<typeof GetMonkeyCodeNames<T>>[number];
           case "record":
-            return Object.assign<Linter.Globals, Linter.Globals>(
-              entries,
+            return Object.assign<Partial<A>, Linter.Globals>(
+              item,
               Object.fromEntries<Linter.Globals>(
                 customLibraries.map<Entry<Linter.Globals>>(
                   /**
-                   * @param {keyof Linter.Globals} key
+                   * @param {keyof import('eslint').Linter.Globals} key
                    * @returns {import("type-fest").Entry<import("eslint").Linter.Globals>}
                    */
                   (key: keyof Linter.Globals): Entry<Linter.Globals> => [key, "readonly"]),
               ),
-            ) as _GetMoneyCodeNamesFuncReturn<T>;
+            ) as Linter.Globals as ReturnType<typeof GetMonkeyCodeNames<T>>[number];
         }
       },
     );

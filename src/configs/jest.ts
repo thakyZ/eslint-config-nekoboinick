@@ -1,0 +1,26 @@
+import { serialize } from "error-serializer";
+import ensureError from "ensure-error";
+import type { ImportModuleSafe } from "../types.ts";
+
+type ModuleType = typeof import("eslint-plugin-jest");
+
+/**
+ * Exports the `eslint-plugin-jest` config.
+ *
+ * @returns {Promise<ImportModuleSafe<ModuleType>>}
+ */
+export default async function (): Promise<ImportModuleSafe<ModuleType>> {
+  try {
+    const module = (await import("eslint-plugin-jest"));
+
+    if ("default" in module) {
+      return module.default;
+    }
+
+    return module;
+  }
+  catch (error: unknown) {
+    console.error(serialize(ensureError(error)));
+    return {} as ImportModuleSafe<ModuleType>;
+  }
+}

@@ -2,69 +2,61 @@ declare module "eslint-plugin-jsx-a11y" {
   import { Linter } from "eslint";
   import { RulesMeta } from "@eslint/core";
 
-  interface Configs {
-    recommended: Linter.LegacyConfig;
-    strict: Linter.LegacyConfig;
-  }
-
-  interface FlatConfigs {
-    recommended: Linter.Config;
-    strict: Linter.Config;
-  }
-
-  interface Rules {
-    "accessible-emoji": RulesMeta;
-    "alt-text": RulesMeta;
-    "anchor-ambiguous-text": RulesMeta;
-    "anchor-has-content": RulesMeta;
-    "anchor-is-valid": RulesMeta;
-    "aria-activedescendant-has-tabindex": RulesMeta;
-    "aria-props": RulesMeta;
-    "aria-proptypes": RulesMeta;
-    "aria-role": RulesMeta;
-    "aria-unsupported-elements": RulesMeta;
-    "autocomplete-valid": RulesMeta;
-    "click-events-have-key-events": RulesMeta;
-    "control-has-associated-label": RulesMeta;
-    "heading-has-content": RulesMeta;
-    "html-has-lang": RulesMeta;
-    "iframe-has-title": RulesMeta;
-    "img-redundant-alt": RulesMeta;
-    "interactive-supports-focus": RulesMeta;
-    "label-has-associated-control": RulesMeta;
-    "label-has-for": RulesMeta;
-    "lang": RulesMeta;
-    "media-has-caption": RulesMeta;
-    "mouse-events-have-key-events": RulesMeta;
-    "no-access-key": RulesMeta;
-    "no-aria-hidden-on-focusable": RulesMeta;
-    "no-autofocus": RulesMeta;
-    "no-distracting-elements": RulesMeta;
-    "no-interactive-element-to-noninteractive-role": RulesMeta;
-    "no-noninteractive-element-interactions": RulesMeta;
-    "no-noninteractive-element-to-interactive-role": RulesMeta;
-    "no-noninteractive-tabindex": RulesMeta;
-    "no-onchange": RulesMeta;
-    "no-redundant-roles": RulesMeta;
-    "no-static-element-interactions": RulesMeta;
-    "prefer-tag-over-role": RulesMeta;
-    "role-has-required-aria-props": RulesMeta;
-    "role-supports-aria-props": RulesMeta;
-    "scope": RulesMeta;
-    "tabindex-no-positive": RulesMeta;
-  }
-
-  interface JsxA11yPlugin extends Linter.Config {
-    configs: Configs;
-    flatConfigs: FlatConfigs;
-    rules: Rules;
-    meta: {
-      name: string;
-      version: string;
+  declare const jsxA11yPlugin: {
+    readonly configs: {
+      readonly recommended: Linter.LegacyConfig;
+      readonly strict: Linter.LegacyConfig;
     };
-  }
-
-  const jsxA11yPlugin: JsxA11yPlugin;
+    readonly flatConfigs: {
+      readonly recommended: Linter.Config;
+      readonly strict: Linter.Config;
+    };
+    readonly rules: {
+      readonly "accessible-emoji": RulesMeta;
+      readonly "alt-text": RulesMeta;
+      readonly "anchor-ambiguous-text": RulesMeta;
+      readonly "anchor-has-content": RulesMeta;
+      readonly "anchor-is-valid": RulesMeta;
+      readonly "aria-activedescendant-has-tabindex": RulesMeta;
+      readonly "aria-props": RulesMeta;
+      readonly "aria-proptypes": RulesMeta;
+      readonly "aria-role": RulesMeta;
+      readonly "aria-unsupported-elements": RulesMeta;
+      readonly "autocomplete-valid": RulesMeta;
+      readonly "click-events-have-key-events": RulesMeta;
+      readonly "control-has-associated-label": RulesMeta;
+      readonly "heading-has-content": RulesMeta;
+      readonly "html-has-lang": RulesMeta;
+      readonly "iframe-has-title": RulesMeta;
+      readonly "img-redundant-alt": RulesMeta;
+      readonly "interactive-supports-focus": RulesMeta;
+      readonly "label-has-associated-control": RulesMeta;
+      readonly "label-has-for": RulesMeta;
+      readonly "lang": RulesMeta;
+      readonly "media-has-caption": RulesMeta;
+      readonly "mouse-events-have-key-events": RulesMeta;
+      readonly "no-access-key": RulesMeta;
+      readonly "no-aria-hidden-on-focusable": RulesMeta;
+      readonly "no-autofocus": RulesMeta;
+      readonly "no-distracting-elements": RulesMeta;
+      readonly "no-interactive-element-to-noninteractive-role": RulesMeta;
+      readonly "no-noninteractive-element-interactions": RulesMeta;
+      readonly "no-noninteractive-element-to-interactive-role": RulesMeta;
+      readonly "no-noninteractive-tabindex": RulesMeta;
+      readonly "no-onchange": RulesMeta;
+      readonly "no-redundant-roles": RulesMeta;
+      readonly "no-static-element-interactions": RulesMeta;
+      readonly "prefer-tag-over-role": RulesMeta;
+      readonly "role-has-required-aria-props": RulesMeta;
+      readonly "role-supports-aria-props": RulesMeta;
+      readonly "scope": RulesMeta;
+      readonly "tabindex-no-positive": RulesMeta;
+    };
+    readonly meta: {
+      readonly name: string;
+      readonly version: string;
+    };
+  };
 
   export = jsxA11yPlugin;
 }

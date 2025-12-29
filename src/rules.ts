@@ -1,6 +1,6 @@
 import type { Linter } from "eslint";
 // import { Entry, Entries } from "type-fest";
-import type { GetMoneyCodeNamesFunc } from "./greasemonkey.js";
+import type { getMonkeyCodeNames } from "./greasemonkey.js";
 
 /**
  *
@@ -9,7 +9,7 @@ import type { GetMoneyCodeNamesFunc } from "./greasemonkey.js";
  * @returns {import('eslint').Linter.RulesRecord}
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function customRules(callback: GetMoneyCodeNamesFunc): Linter.RulesRecord {
+export default function customRules(callback: ReturnType<typeof getMonkeyCodeNames>): Linter.RulesRecord {
   return {
     "comma-dangle": "off",
     "for-direction": "error",
