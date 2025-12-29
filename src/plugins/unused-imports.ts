@@ -1,22 +1,26 @@
 import { serialize } from "error-serializer";
 import ensureError from "ensure-error";
-import type { ImportValue } from "../types.ts";
+import type { ImportModuleSafe } from "../types.ts";
 
 type ModuleType = typeof import("eslint-plugin-unused-imports");
 
-export default (
-  /**
-   * Exports the `eslint-plugin-unused-imports` plguin.
-   *
-   * @returns {Promise<ImportValue<ModuleType, "default">>}
-   */
-  async function (): Promise<ImportValue<ModuleType, "default">> {
-    try {
-      return (await import("eslint-plugin-unused-imports")).default;
+/**
+ * Exports the `eslint-plugin-unused-imports` plguin.
+ *
+ * @returns {Promise<ImportModuleSafe<ModuleType>>}
+ */
+export default async function (): Promise<ImportModuleSafe<ModuleType>> {
+  try {
+    const module = (await import("eslint-plugin-unused-imports"));
+
+    if ("default" in module) {
+      return module.default;
     }
-    catch (error: unknown) {
-      console.error(serialize(ensureError(error)));
-      return {} as ImportValue<ModuleType, "default">;
-    }
+
+    return module;
   }
-)();
+  catch (error: unknown) {
+    console.error(serialize(ensureError(error)));
+    return {} as ImportModuleSafe<ModuleType>;
+  }
+}

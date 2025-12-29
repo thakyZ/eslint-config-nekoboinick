@@ -1,22 +1,26 @@
 import { serialize } from "error-serializer";
 import ensureError from "ensure-error";
-import type { ImportValue } from "../types.ts";
+import type { ImportModuleSafe, ImportValue } from "../types.ts";
 
 type ModuleType = typeof import("typescript-eslint");
 
-export default (
-  /**
-   * Exports the `typescript-eslint` plguin.
-   *
-   * @returns {Promise<ImportValue<ModuleType, "plugin">>}
-   */
-  async function (): Promise<ImportValue<ModuleType, "plugin">> {
-    try {
-      return (await import("typescript-eslint")).plugin;
+/**
+ * Exports the `typescript-eslint` plguin.
+ *
+ * @returns {Promise<ImportValue<ImportModuleSafe<ModuleType>, "plugin">>}
+ */
+export default async function (): Promise<ImportValue<ImportModuleSafe<ModuleType>, "plugin">> {
+  try {
+    const module = (await import("typescript-eslint"));
+
+    if ("default" in module) {
+      return module.default.plugin;
     }
-    catch (error: unknown) {
-      console.error(serialize(ensureError(error)));
-      return {} as ImportValue<ModuleType, "plugin">;
-    }
+
+    return (module as ImportModuleSafe<ModuleType>).plugin;
   }
-)();
+  catch (error: unknown) {
+    console.error(serialize(ensureError(error)));
+    return {} as ImportValue<ImportModuleSafe<ModuleType>, "plugin">;
+  }
+}
