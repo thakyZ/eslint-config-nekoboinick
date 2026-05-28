@@ -11,6 +11,8 @@ on:
       - LICENSE
       - .gitattributes
       - .gitignore
+      - .vscode/**
+      - .github/**
   pull_request:
     paths-ignore:
       - .github/**
@@ -18,6 +20,8 @@ on:
       - LICENSE
       - .gitattributes
       - .gitignore
+      - .vscode/**
+      - .github/**
 
 permissions:
   contents: read
