@@ -6,6 +6,10 @@ on:
     tags:
       - v*.*.*
     paths-ignore: 
+      - README.md
+      - LICENSE
+      - .gitattributes
+      - .gitignore
       - .vscode/**
       - .github/**
 
